@@ -64,8 +64,8 @@ public class RequeteTest {
 
         Assert.assertTrue(n == 1L);
     }
-//Nombre de films réalisés par Polanski
 
+    //Nombre de films réalisés par Polanski
     @Test
     public void nbFilmsRealiseParPolanski() {
         EntityManager em = Persistence.createEntityManagerFactory("PU").createEntityManager();
@@ -76,8 +76,8 @@ public class RequeteTest {
 
         Assert.assertEquals(2L, n.longValue());
     }
-    //Nombre de films interprétés par Polanski
 
+    //Nombre de films interprétés par Polanski
     @Test
     public void NbFilmInterPolanskiOK() {
         EntityManager em = Persistence.createEntityManagerFactory("PU").createEntityManager();
@@ -88,8 +88,8 @@ public class RequeteTest {
 
         Assert.assertEquals(1, n.longValue());
     }
-    //Nombre de films à la fois interprétés et réalisés par polanski
 
+    //Nombre de films à la fois interprétés et réalisés par polanski
     @Test
     public void nbFilmJoueEtInterPolanskiOK() {
         EntityManager em = Persistence.createEntityManagerFactory("PU").createEntityManager();
@@ -100,8 +100,8 @@ public class RequeteTest {
 
         Assert.assertEquals(1L, l.longValue());
     }
-    //Le titre du film d'horreur anglais réalisé par roman polanski
 
+    //Le titre du film d'horreur anglais réalisé par roman polanski
     @Test
     public void titreFilmHorreurAnglaisRealByPolanski() {
         EntityManager em = Persistence.createEntityManagerFactory("PU").createEntityManager();
@@ -126,7 +126,6 @@ public class RequeteTest {
     }
 
     //Le nombre de films réalisés par les 2 frères coen
-    //
     @Test
     public void nbFilmRealParFCoen() {
         EntityManager em = Persistence.createEntityManagerFactory("PU").createEntityManager();
@@ -139,12 +138,13 @@ public class RequeteTest {
     }
 
     //Le nombre de films des frères coen interprétés par Steve Buscemi
-    //
     @Test
     public void nbFilmCoenInterParSteve() {
         EntityManager em = Persistence.createEntityManagerFactory("PU").createEntityManager();
 
-        Query query = em.createQuery("SELECT COUNT(f) FROM  Film f JOIN f.realisateurs r JOIN f.realisateurs r2 JOIN f.acteurs a WHERE r.nom like '%Coen%' and r.prenom LIKE '%Joel%' and r2.nom Like '%Coen%' and r2.prenom LIKE '%Ethan%' AND a.nom LIKE '%Buscemi%'");
+        Query query = em.createQuery("SELECT COUNT(f) "
+                + "FROM  Film f JOIN f.realisateurs r JOIN f.realisateurs r2 JOIN f.acteurs a "
+                + "WHERE r.nom like '%Coen%' and r.prenom LIKE '%Joel%' and r2.nom Like '%Coen%' and r2.prenom LIKE '%Ethan%' AND a.nom LIKE '%Buscemi%'");
 
         Long n = (Long) query.getSingleResult();
 
@@ -152,7 +152,6 @@ public class RequeteTest {
     }
 
     //Le nombre de films policiers des frères Coen interprétés par Steve Buscemi
-    //
     @Test
     public void nbFilmPolicierFrCoenInterBuscemi() {
         EntityManager em = Persistence.createEntityManagerFactory("PU").createEntityManager();
@@ -165,7 +164,6 @@ public class RequeteTest {
     }
 
     //Le nombre de saisons de la série Dexter
-    //
     @Test
     public void nbSaisonsDexter() {
         EntityManager em = Persistence.createEntityManagerFactory("PU").createEntityManager();
@@ -177,20 +175,20 @@ public class RequeteTest {
         Assert.assertEquals(8L, n.longValue());
     }
 
+
     //Le nombre d'épisodes de la saison 8 de la série Dexter
-    //
     @Test
     public void nbEpisodeSaison8Dexter() {
         EntityManager em = Persistence.createEntityManagerFactory("PU").createEntityManager();
 
-        Query query = em.createQuery("SELECT COUNT(ep) FROM Saison sa JOIN sa.serie se JOIN sa.episodes ep WHERE se.titre LIKE '%Dexter%' AND sa.numSaison = 8");
+        Query query = em.createQuery("SELECT COUNT(ep) FROM Episode ep WHERE ep.saison.serie.titre='Dexter' AND ep.saison.numSaison = 8");
 
         Long n = (Long) query.getSingleResult();
 
         Assert.assertEquals(12L, n.longValue());
     }
+    
     //Le nombre total d'épisodes de la série Dexter
-    //
     @Test
     public void nbEpisodeSerieDexter(){
         EntityManager em = Persistence.createEntityManagerFactory("PU").createEntityManager();
@@ -201,8 +199,8 @@ public class RequeteTest {
 
         Assert.assertEquals(96L, n.longValue());
     }
+
     //Le nombre total de liens pour nos films policiers américains
-    //
     @Test
     public void nbLiensFilmsPoliciets(){
         EntityManager em = Persistence.createEntityManagerFactory("PU").createEntityManager();
@@ -237,7 +235,7 @@ public class RequeteTest {
 
         Assert.assertEquals(0L, n);
     }
-    //Parmi tous les films, uniquement ceux interprétés par Polanski  ( utiliser UNION ou MINUS ou INTERSECT )
+    //Parmi tous les films, uniquement ceux interprétés par Polanski (utiliser UNION ou MINUS ou INTERSECT)
     //
     
     @Test
