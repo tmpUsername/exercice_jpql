@@ -235,9 +235,8 @@ public class RequeteTest {
 
         Assert.assertEquals(0L, n);
     }
+
     //Parmi tous les films, uniquement ceux interprétés par Polanski (utiliser UNION ou MINUS ou INTERSECT)
-    //
-    
     @Test
     public void filmsInterPolanski(){
         EntityManager em = Persistence.createEntityManagerFactory("PU").createEntityManager();
@@ -248,8 +247,8 @@ public class RequeteTest {
 
         Assert.assertEquals(1L, n);
     }
-    //Tous les films interprétés par Polanski et aussi tous les films d'horreur ( utiliser UNION ou MINUS ou INTERSECT )
 
+    //Tous les films interprétés par Polanski et aussi tous les films d'horreur ( utiliser UNION ou MINUS ou INTERSECT )
     @Test
     public void filmInterPolanskiPlusFilmHorreur (){
         EntityManager em = Persistence.createEntityManagerFactory("PU").createEntityManager();
