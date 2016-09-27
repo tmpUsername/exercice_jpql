@@ -8,7 +8,7 @@ package streaming.test;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
-import junit.framework.Assert;
+import org.junit.Assert;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import streaming.entity.Film;
@@ -231,15 +231,35 @@ public class RequeteTest {
     public void filmDHorreurSansPolanski() {
         EntityManager em = Persistence.createEntityManagerFactory("PU").createEntityManager();
 
-        Query query = em.createQuery("SELECT f FROM Film f WHERE f.genre.nom = 'Horreur' INTERSECT SELECT f FROM Film f JOIN f.acteurs a WHERE a.nom <> 'Polanski'");
+        Query query = em.createQuery("SELECT COUNT(f) FROM Film f WHERE f.genre.nom = 'Horreur' AND NOT EXISTS (SELECT f FROM Film f JOIN f.acteurs a WHERE a.nom = 'Polanski')");
 
-        int n = query.getResultList().size();
+        long n = (long) query.getSingleResult();
 
-        Assert.assertEquals(0, n);
+        Assert.assertEquals(0L, n);
     }
     //Parmi tous les films, uniquement ceux interprétés par Polanski  ( utiliser UNION ou MINUS ou INTERSECT )
     //
     
+    @Test
+    public void filmsInterPolanski(){
+        EntityManager em = Persistence.createEntityManagerFactory("PU").createEntityManager();
+
+        Query query = em.createQuery("SELECT COUNT(f) FROM Film f JOIN f.acteurs a WHERE a.nom = 'Polanski'");
+
+        long n = (long) query.getSingleResult();
+
+        Assert.assertEquals(1L, n);
+    }
     //Tous les films interprétés par Polanski et aussi tous les films d'horreur ( utiliser UNION ou MINUS ou INTERSECT )
 
+    @Test
+    public void filmInterPolanskiPlusFilmHorreur (){
+        EntityManager em = Persistence.createEntityManagerFactory("PU").createEntityManager();
+
+        Query query = em.createQuery("SELECT f FROM Film f JOIN f.acteurs a WHERE a.nom = 'Polanski' UNION SELECT f FROM Film f JOIN f.genre g WHERE g.nom='Horreur'");
+
+        int n = query.getResultList().size();
+
+        Assert.assertEquals(1, n);
+    }
 }
